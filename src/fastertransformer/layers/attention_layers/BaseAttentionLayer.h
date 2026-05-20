@@ -46,7 +46,7 @@ AttentionType getAttentionType(size_t     size_per_head,
                                const int  sm,
                                const bool remove_padding,
                                const int  max_seq_len,
-                               const bool is_fuse                          = true,
+                               const bool is_fuse                          = false,
                                const bool with_swin_relative_position_bias = false,
                                const bool causal_mask                      = false)
 {

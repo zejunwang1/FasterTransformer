@@ -14,14 +14,14 @@
 
 add_executable(wenet_encoder_example wenet_encoder_example.cc)
 if (SPARSITY_SUPPORT)
-target_link_libraries(wenet_encoder_example PUBLIC -lcublas -lcublasLt -lcudart -lcusparse -lcusparseLt -lcudnn WenetEncoder)
+    target_link_libraries(wenet_encoder_example PUBLIC -lcublas -lcublasLt -lcudart -lcusparse -lcusparseLt "${CUDNN_LIBRARY_PATH}" WenetEncoder)
 else()
-target_link_libraries(wenet_encoder_example PUBLIC -lcublas -lcublasLt -lcudart -lcudnn WenetEncoder)
+    target_link_libraries(wenet_encoder_example PUBLIC -lcublas -lcublasLt -lcudart "${CUDNN_LIBRARY_PATH}" WenetEncoder)
 endif()
 
 add_executable(wenet_decoder_example wenet_decoder_example.cc)
 if(SPARSITY_SUPPORT)
-    target_link_libraries(wenet_decoder_example PUBLIC -lcublas -lcublasLt -lcudart -lcusparse -lcusparseLt -lcudnn WenetDecoder)
+    target_link_libraries(wenet_decoder_example PUBLIC -lcublas -lcublasLt -lcudart -lcusparse -lcusparseLt "${CUDNN_LIBRARY_PATH}" WenetDecoder)
 else()
-    target_link_libraries(wenet_decoder_example PUBLIC -lcublas -lcublasLt -lcudart -lcudnn WenetDecoder)
+    target_link_libraries(wenet_decoder_example PUBLIC -lcublas -lcublasLt -lcudart "${CUDNN_LIBRARY_PATH}" WenetDecoder)
 endif()

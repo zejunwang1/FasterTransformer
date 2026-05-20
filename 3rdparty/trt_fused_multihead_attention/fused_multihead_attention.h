@@ -228,7 +228,7 @@ public:
                     hmod = findModuleIter->second;
                 }
                 else
-                {
+		{
                     cuErrCheck(mDriver.cuModuleLoadData(&hmod, kernelMeta.mCubin), mDriver);
                     mModules.insert(std::make_pair(kernelMeta.mCubin, hmod));
                 }
@@ -237,7 +237,7 @@ public:
                 funcInfo.mMetaInfoIndex = i;
                 cuErrCheck(mDriver.cuModuleGetFunction(&funcInfo.mDeviceFunction, hmod, kernelMeta.mFuncName), mDriver);
                 if (kernelMeta.mSharedMemBytes >= 48 * 1024)
-                {
+		{
                     cuErrCheck(mDriver.cuFuncSetAttribute(funcInfo.mDeviceFunction,
                                    CU_FUNC_ATTRIBUTE_MAX_DYNAMIC_SHARED_SIZE_BYTES, kernelMeta.mSharedMemBytes),
                         mDriver);

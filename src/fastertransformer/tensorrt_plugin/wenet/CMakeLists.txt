@@ -13,4 +13,4 @@
 # limitations under the License.
 
 add_library(trt_wenet SHARED EncoderPlugin.cc DecoderPlugin.cc)
-target_link_libraries(trt_wenet -lcublas -lcublasLt -lcudnn -lcudart -lcusparse -lnvinfer WenetEncoder WenetDecoder)
+target_link_libraries(trt_wenet -lcublas -lcublasLt "${CUDNN_LIBRARY_PATH}" -lcudart -lcusparse -lnvinfer WenetEncoder WenetDecoder)

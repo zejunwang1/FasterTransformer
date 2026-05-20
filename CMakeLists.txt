@@ -21,6 +21,9 @@ if(${CUDA_VERSION_MAJOR} VERSION_GREATER_EQUAL "11")
   message("CUDA_VERSION ${CUDA_VERSION_MAJOR} is greater or equal than 11, enable -DENABLE_BF16 flag")
 endif()
 
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/Modules)
+find_package(CUDNN)
+
 option(BUILD_CUTLASS_MOE "Builds CUTLASS kernels supporting MoE GEMM" ON)
 if(BUILD_CUTLASS_MOE)
   message(STATUS "Add DBUILD_CUTLASS_MOE, requires CUTLASS. Increases compilation time")
@@ -93,7 +96,7 @@ if(USE_TRITONSERVER_DATATYPE)
   add_definitions("-DUSE_TRITONSERVER_DATATYPE")
 endif()
 
-set(CXX_STD "14" CACHE STRING "C++ standard")
+set(CXX_STD "17" CACHE STRING "C++ standard")
 
 set(CUDA_PATH ${CUDA_TOOLKIT_ROOT_DIR})
 
@@ -201,6 +204,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(COMMON_HEADER_DIRS
   ${PROJECT_SOURCE_DIR}
   ${CUDA_PATH}/include
+  ${CUDNN_INCLUDE_PATH}
   ${CUTLASS_HEADER_DIR}
   ${CUTLASS_EXTENSIONS_DIR}
 )
