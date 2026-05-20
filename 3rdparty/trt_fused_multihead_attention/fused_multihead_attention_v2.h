@@ -5494,8 +5494,7 @@ public:
         const CUfunction func           = findIter->second.mDeviceFunction;
         void*            kernelParams[] = {&params, nullptr};
         if (!forceUnroll) {
-	    /*
-	    cuErrCheck(mDriver.cuLaunchKernel(func,
+            cuErrCheck(mDriver.cuLaunchKernel(func,
                                               params.h,
                                               params.b,
                                               1,
@@ -5506,18 +5505,7 @@ public:
                                               ss,
                                               kernelParams,
                                               nullptr),
-                       mDriver);*/
-	    mDriver.cuLaunchKernel(func,
-			    	   params.h,
-				   params.b,
-				   1,
-				   kernelMeta.mThreadsPerCTA,
-				   1,
-				   1,
-				   kernelMeta.mSharedMemBytes,
-				   ss,
-				   kernelParams,
-				   nullptr);
+                       mDriver);
         }
         else {
             int unroll = kernelMeta.mS / kernelMeta.mUnrollStep;
