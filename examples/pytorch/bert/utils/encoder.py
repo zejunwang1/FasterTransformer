@@ -319,7 +319,7 @@ class CustomEncoder(torch.nn.Module):
                     *weights_,
                     head_num, head_size, remove_padding, layer_num, int8_mode, sparse, 1.0)
 
-    def forward(self, hidden_states, attention_mask, sequence_lengths):
+    def forward(self, hidden_states, sequence_lengths):
         hidden_states = self.encoders.forward(hidden_states, sequence_lengths)
         return (hidden_states,)
 
