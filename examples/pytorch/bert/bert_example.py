@@ -148,6 +148,8 @@ def bert_example(args):
         raise ValueError("wrong avg_seq_len")
 
     mask = sequence_mask(mem_seq_lens, args['seq_len'], False).to(torch.float)
+    # mask = sequence_mask(mem_seq_lens, args['seq_len'], True).to(torch.float)
+    # mask = mask[:, None, None, :]
     # mask = torch.randint(0, 2, (batch_size, seq_len, seq_len), dtype=torch.float32).cuda()
     if args['data_type'] == 'fp16' or args['int8_mode'] != 0:
         inp = inp.half()
