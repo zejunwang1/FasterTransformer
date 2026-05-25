@@ -341,6 +341,9 @@ class HuggingFaceEncoder(torch.nn.Module):
         self.head_mask = [None] * layer_num
 
     def forward(self, hidden_states, attention_mask):
-        extended_attention_mask = (1.0 - attention_mask) * -10000.0
+        assert attention_mask.dim() == 2
+        extended_attention_mask = attention_mask[:, None, None, :]
+        extended_attention_mask = extended_attention_mask.to(dtype=next(self.parameters()).dtype)
+        extended_attention_mask = (1.0 - extended_attention_mask) * -10000.0
         output = self.encoder(hidden_states, extended_attention_mask, self.head_mask)
         return output

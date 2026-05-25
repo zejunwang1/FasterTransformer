@@ -147,9 +147,8 @@ def bert_example(args):
     else:
         raise ValueError("wrong avg_seq_len")
 
-    mask = sequence_mask(mem_seq_lens, args['seq_len'], False).to(torch.float)
-    # mask = sequence_mask(mem_seq_lens, args['seq_len'], True).to(torch.float)
-    # mask = mask[:, None, None, :]
+    mask = sequence_mask(mem_seq_lens, args['seq_len'], True).to(torch.float)
+    # mask = sequence_mask(mem_seq_lens, args['seq_len'], False).to(torch.float)
     # mask = torch.randint(0, 2, (batch_size, seq_len, seq_len), dtype=torch.float32).cuda()
     if args['data_type'] == 'fp16' or args['int8_mode'] != 0:
         inp = inp.half()
@@ -212,12 +211,12 @@ def bert_example(args):
         ft_mask = mask.to(f"cuda:{rank}")
         ft_mem_seq_lens = mem_seq_lens.to(f"cuda:{rank}")
         ft_output_mask = output_mask.to(f"cuda:{rank}")
-        ft_output = custom_encoder(ft_inp, ft_mask, ft_mem_seq_lens)[0] * ft_output_mask
+        ft_output = custom_encoder(ft_inp, ft_mem_seq_lens)[0] * ft_output_mask
         if rank == 0:
             print(ft_output)
             print(ft_output.size())
 
-        eff_ft_output = eff_custom_encoder(ft_inp, ft_mask, ft_mem_seq_lens)[0] * ft_output_mask
+        eff_ft_output = eff_custom_encoder(ft_inp, ft_mem_seq_lens)[0] * ft_output_mask
         if rank == 0:
             print(eff_ft_output)
             print(eff_ft_output.size())
@@ -251,24 +250,24 @@ def bert_example(args):
                 # time.sleep(60)
 
             for i in range(iterations):
-                output = custom_encoder(ft_inp, ft_mask, ft_mem_seq_lens)
+                output = custom_encoder(ft_inp, ft_mem_seq_lens)
             t20 = timeit.default_timer()
             # nvtx.range_push("ext")
             for i in range(iterations):
                 # nvtx.range_push("ext"+str(i))
-                output = custom_encoder(ft_inp, ft_mask, ft_mem_seq_lens)
+                output = custom_encoder(ft_inp, ft_mem_seq_lens)
                 # nvtx.range_pop()
             # nvtx.range_pop()
             t2 = timeit.default_timer() - t20
             # time.sleep(60)
 
             for i in range(iterations):
-                output = eff_custom_encoder(ft_inp, ft_mask, ft_mem_seq_lens)
+                output = eff_custom_encoder(ft_inp, ft_mem_seq_lens)
             t30 = timeit.default_timer()
             # nvtx.range_push("eff_ext")
             for i in range(iterations):
                 # nvtx.range_push("eff_ext"+str(i))
-                output = eff_custom_encoder(ft_inp, ft_mask, ft_mem_seq_lens)
+                output = eff_custom_encoder(ft_inp, ft_mem_seq_lens)
                 # nvtx.range_pop()
             # nvtx.range_pop()
             t3 = timeit.default_timer() - t30
@@ -289,7 +288,7 @@ def bert_example(args):
             def run():
                 t40 = timeit.default_timer()
                 for i in range(iterations):
-                    ft_output = custom_encoder(ft_inp, ft_mask, ft_mem_seq_lens)[0] * ft_output_mask
+                    ft_output = custom_encoder(ft_inp, ft_mem_seq_lens)[0] * ft_output_mask
                 t4 = timeit.default_timer() - t40
                 if rank == 0:
                     diff = torch.abs(hf_output - ft_output)
