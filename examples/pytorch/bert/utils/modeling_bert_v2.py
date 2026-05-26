@@ -25,8 +25,6 @@ class BertModel(BertPreTrainedModel):
         position_ids=None,
         head_mask=None,
         inputs_embeds=None,
-        encoder_hidden_states=None,
-        encoder_attention_mask=None,
         output_attentions=None,
         output_hidden_states=None,
     ):
@@ -81,8 +79,6 @@ class BertModel(BertPreTrainedModel):
                 embedding_output,
                 attention_mask=extended_attention_mask,
                 head_mask=head_mask,
-                encoder_hidden_states=encoder_hidden_states,
-                encoder_attention_mask=encoder_extended_attention_mask,
                 output_attentions=output_attentions,
                 output_hidden_states=output_hidden_states,
             )
