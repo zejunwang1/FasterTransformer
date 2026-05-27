@@ -46,7 +46,7 @@ class BertModel(BertPreTrainedModel):
 
         if self.use_ext_encoder:
             assert attention_mask.dim() == 2
-            seq_lens = torch.sum(attention_mask, 1, dtype=torch.int32).to(device)
+            seq_lens = torch.sum(attention_mask, 1, dtype=torch.int32)
         else:
             # We can provide a self-attention mask of dimensions [batch_size, from_seq_length, to_seq_length]
             # ourselves in which case we just need to make it broadcastable to all heads.
